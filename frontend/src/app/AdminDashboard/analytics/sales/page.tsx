@@ -33,7 +33,7 @@ const SalesAnalytics = () => {
     };
 
     fetchSalesData();
-  }, []);
+  }, [enqueueSnackbar]);
 
   const chartData = {
     labels: salesData.map((item) => `${item._id.month}/${item._id.year}`),
