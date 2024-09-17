@@ -16,9 +16,9 @@ interface Product {
 const ShowProduct = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const { enqueueSnackbar } = useSnackbar();
-  const token = localStorage.getItem('token'); // Get token from local storage
-
+  
   useEffect(() => {
+   
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URI}products/get-products`);
@@ -32,6 +32,7 @@ const ShowProduct = () => {
   }, []);
 
   const handleAddToCart = async (productId: string) => {
+    const token = localStorage.getItem('token'); 
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URI}cart/add-item`,

@@ -13,9 +13,9 @@ export default function OrderHistory() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const token =  localStorage.getItem('token') ;
-
+  
   useEffect(() => {
+    const token =  localStorage.getItem('token') ;
     if (token) {
       axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URI}orders/order-history`, {
         headers: {
@@ -27,7 +27,7 @@ export default function OrderHistory() {
     } else {
       router.push('/login'); // Redirect to login if token is not found
     }
-  }, [token, router]);
+  }, [ router]);
   console.log(orders);
   return (
     <div className="container mx-auto p-4">

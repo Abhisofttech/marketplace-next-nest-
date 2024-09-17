@@ -21,9 +21,9 @@ const ShowProducts = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const token = localStorage.getItem('token');
-
+  
   useEffect(() => {
+    const token = localStorage.getItem('token');
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URI}products/seller-product`, {
@@ -39,9 +39,11 @@ const ShowProducts = () => {
     };
 
     fetchProducts();
-  }, [token, enqueueSnackbar]);
+  }, [ enqueueSnackbar]);
 
   const handleDelete = async (productId: string) => {
+    
+    const token = localStorage.getItem('token');
     if (!token) return;
 
     if (confirm('Are you sure you want to delete this product?')) {

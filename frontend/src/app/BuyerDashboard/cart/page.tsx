@@ -26,9 +26,9 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const router=useRouter()
-  const token = localStorage.getItem('token'); // Get token from local storage
-
+  
   useEffect(() => {
+    const token = localStorage.getItem('token'); // Get token from local storage
     const fetchCartItems = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URI}cart/get-items`, {
@@ -41,7 +41,7 @@ const CartPage = () => {
     };
 
     fetchCartItems();
-  }, [token, enqueueSnackbar]);
+  }, [ enqueueSnackbar]);
 
   // Calculate total price
   useEffect(() => {
@@ -55,6 +55,7 @@ const CartPage = () => {
 
   // Handle remove item
   const handleRemoveItem = async (itemId: string) => {
+    const token = localStorage.getItem('token');
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URI}cart/remove-item/${itemId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -69,6 +70,7 @@ const CartPage = () => {
 
   // Handle quantity update
   const handleUpdateQuantity = async (itemId: string, newQuantity: number) => {
+    const token = localStorage.getItem('token');
     if (newQuantity < 1) {
       enqueueSnackbar('Quantity cannot be less than 1', { variant: 'warning' });
       return;

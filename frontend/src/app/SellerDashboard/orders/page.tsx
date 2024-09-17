@@ -20,9 +20,9 @@ export default function SellerOrders() {
   const [loading, setLoading] = useState<boolean>(false);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
   const { enqueueSnackbar } = useSnackbar();
-  const token = localStorage.getItem('token');
-
+  
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (token) {
       setLoading(true);
       axios
@@ -37,9 +37,10 @@ export default function SellerOrders() {
     } else {
       enqueueSnackbar('Please log in to view orders', { variant: 'error' });
     }
-  }, [token, enqueueSnackbar]);
+  }, [ enqueueSnackbar]);
 
   const updateOrderStatus = (orderId: string, status: string) => {
+    const token = localStorage.getItem('token');
     setUpdatingStatus(orderId); // Set the order that is being updated
     axios
       .put(
