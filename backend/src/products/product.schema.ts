@@ -25,6 +25,9 @@ export class Product {
   @Prop({ required: true, min: 0 })
   stock: number;
 
+  @Prop()
+  views: number;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   seller: MongooseSchema.Types.ObjectId;
 }

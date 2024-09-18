@@ -109,4 +109,8 @@ export class OrderService {
   }
 
 
+  async countOrders(): Promise<number> {
+    return this.orderModel.countDocuments().exec();
+  }
+
 }

@@ -90,4 +90,17 @@ export class CartService {
     await cart.save();
     return { message: 'Cart cleared successfully' };
   }
+
+  async findAbandonedCarts(): Promise<any[]> {
+    return this.cartModel.aggregate([
+      { $match: { items: { $ne: [] } } }, // Find carts with items
+      { $group: { _id: "$user", cartCount: { $sum: 1 } } }, // Group by user and count carts
+    ]);
+  }
+
+  // Count total number of carts
+  async countCarts(): Promise<number> {
+    return this.cartModel.countDocuments().exec();
+  }
+
 }

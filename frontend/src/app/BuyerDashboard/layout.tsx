@@ -9,17 +9,17 @@ interface BuyerDashboardLayoutProps {
 
 const BuyerDashboardLayout = ({ children }: BuyerDashboardLayoutProps) => {
   return (
-    <div className="min-h-screen bg-gray-100">
-     
-      <BuyerNavbar />
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white">
+      <BuyerNavbar  />
 
       {/* Main content area */}
-      <div className="pt-16"> {/* Adding padding to avoid overlap with fixed navbar */}
-        <div className="max-w-7xl mx-auto p-4">
+      <div className="pt-16 min-h-screen">
+        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
           {children}
         </div>
       </div>
-      <Footer/>
+      
+      <Footer  />
     </div>
   );
 };

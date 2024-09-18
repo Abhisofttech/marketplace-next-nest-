@@ -1,6 +1,3 @@
-
-
-// components/AdminNavbar.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -11,8 +8,9 @@ import { useRouter } from 'next/navigation';
 const AdminNavbar = () => {
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
+  
   const analyticsRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
 
@@ -21,7 +19,7 @@ const AdminNavbar = () => {
     router.push('/signin'); // Redirect to login page after logout
   };
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -39,6 +37,16 @@ const AdminNavbar = () => {
     };
   }, []);
 
+  const toggleAnalytics = () => {
+    setIsAnalyticsOpen((prev) => !prev);
+    setIsSettingsOpen(false); // Close settings dropdown when opening analytics
+  };
+
+  const toggleSettings = () => {
+    setIsSettingsOpen((prev) => !prev);
+    setIsAnalyticsOpen(false); // Close analytics dropdown when opening settings
+  };
+
   return (
     <nav className="bg-gray-800 p-4 fixed w-full z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -50,7 +58,7 @@ const AdminNavbar = () => {
           {/* Analytics Dropdown */}
           <div className="relative" ref={analyticsRef}>
             <button
-              onClick={() => setIsAnalyticsOpen(!isAnalyticsOpen)}
+              onClick={toggleAnalytics}
               className="text-gray-300 hover:text-white flex items-center space-x-1"
             >
               <BarChart className="w-5 h-5" />
@@ -75,7 +83,7 @@ const AdminNavbar = () => {
           {/* Settings Dropdown */}
           <div className="relative" ref={settingsRef}>
             <button
-              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+              onClick={toggleSettings}
               className="text-gray-300 hover:text-white flex items-center space-x-1"
             >
               <Settings className="w-5 h-5" />
@@ -110,7 +118,7 @@ const AdminNavbar = () => {
         {/* Hamburger Menu for Mobile */}
         <div className="md:hidden">
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} // Toggle mobile menu
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="text-gray-300 focus:outline-none"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

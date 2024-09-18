@@ -1,9 +1,7 @@
 // components/BuyerNavbar.tsx
 
-
-
-'use client'
-import { useState } from 'react';
+'use client';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Home, ShoppingCart, Settings, List, LogOut } from 'lucide-react'; // Importing icons
@@ -14,13 +12,44 @@ const BuyerNavbar = () => {
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
   const router = useRouter();
 
+  const orderDropdownRef = useRef<HTMLDivElement>(null);
+  const settingsDropdownRef = useRef<HTMLDivElement>(null);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     router.push('/signin'); // Redirect to login page after logout
   };
 
+  // Function to handle clicks outside of dropdowns
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      orderDropdownRef.current && !orderDropdownRef.current.contains(event.target as Node) &&
+      settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOrderDropdownOpen(false);
+      setIsSettingsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleOrderDropdown = () => {
+    setIsOrderDropdownOpen((prev) => !prev);
+    setIsSettingsDropdownOpen(false); // Close settings dropdown when opening orders
+  };
+
+  const toggleSettingsDropdown = () => {
+    setIsSettingsDropdownOpen((prev) => !prev);
+    setIsOrderDropdownOpen(false); // Close orders dropdown when opening settings
+  };
+
   return (
-    <nav className="bg-gray-800 p-4 fixed w-full">
+    <nav className="bg-gray-800 p-4 fixed w-full z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="text-white text-lg font-bold">MarketPlace</div>
         <div className="hidden md:flex space-x-6 items-center">
@@ -32,9 +61,9 @@ const BuyerNavbar = () => {
           </Link>
 
           {/* Orders Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={orderDropdownRef}>
             <button
-              onClick={() => setIsOrderDropdownOpen(!isOrderDropdownOpen)}
+              onClick={toggleOrderDropdown}
               className="text-gray-300 hover:text-white flex items-center"
             >
               <List className="mr-1" /> Orders
@@ -52,9 +81,9 @@ const BuyerNavbar = () => {
           </div>
 
           {/* Settings Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={settingsDropdownRef}>
             <button
-              onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+              onClick={toggleSettingsDropdown}
               className="text-gray-300 hover:text-white flex items-center"
             >
               <Settings className="mr-1" /> Settings
@@ -108,7 +137,7 @@ const BuyerNavbar = () => {
           {/* Orders Dropdown for Mobile */}
           <div>
             <button
-              onClick={() => setIsOrderDropdownOpen(!isOrderDropdownOpen)}
+              onClick={toggleOrderDropdown}
               className="block text-gray-300 hover:text-white"
             >
               <List className="inline mr-2" /> Orders
@@ -128,7 +157,7 @@ const BuyerNavbar = () => {
           {/* Settings Dropdown for Mobile */}
           <div>
             <button
-              onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+              onClick={toggleSettingsDropdown}
               className="block text-gray-300 hover:text-white"
             >
               <Settings className="inline mr-2" /> Settings
@@ -161,3 +190,4 @@ const BuyerNavbar = () => {
 };
 
 export default BuyerNavbar;
+

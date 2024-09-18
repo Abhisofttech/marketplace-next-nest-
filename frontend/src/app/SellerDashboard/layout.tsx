@@ -15,7 +15,7 @@ const SellerDashboardLayout = ({ children }: SellerDashboardLayoutProps) => {
       <SellerNavbar />
 
       {/* Main content area */}
-      <div className="pt-16"> {/* Adding padding to avoid overlap with fixed navbar */}
+      <div className="pt-16 min-h-screen"> {/* Adding padding to avoid overlap with fixed navbar */}
         <div className="max-w-7xl mx-auto p-4">
           {children}
         </div>

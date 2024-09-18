@@ -1,5 +1,5 @@
-'use client'
-import { useState } from 'react';
+'use client';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Home, Package, Settings, Box, PlusSquare, ShoppingCart, LogOut } from 'lucide-react'; // Importing icons
@@ -10,25 +10,55 @@ const SellerNavbar = () => {
   const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
   const router = useRouter();
 
+  const productDropdownRef = useRef<HTMLDivElement>(null);
+  const settingsDropdownRef = useRef<HTMLDivElement>(null);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     router.push('/signin'); // Redirect to login page after logout
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      productDropdownRef.current && !productDropdownRef.current.contains(event.target as Node) &&
+      settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsProductDropdownOpen(false);
+      setIsSettingsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleProductDropdown = () => {
+    setIsProductDropdownOpen((prev) => !prev);
+    setIsSettingsDropdownOpen(false); // Close settings dropdown when opening products
+  };
+
+  const toggleSettingsDropdown = () => {
+    setIsSettingsDropdownOpen((prev) => !prev);
+    setIsProductDropdownOpen(false); // Close products dropdown when opening settings
   };
 
   return (
     <nav className="bg-gray-800 p-4 fixed w-full z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="text-white text-lg font-bold">MarketPlace</div>
-        
+
         <div className="hidden md:flex space-x-6 items-center">
           <Link href="/SellerDashboard" className="text-gray-300 hover:text-white flex items-center">
             <Home className="mr-1" /> Home
           </Link>
 
           {/* Products Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={productDropdownRef}>
             <button
-              onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
+              onClick={toggleProductDropdown}
               className="text-gray-300 hover:text-white flex items-center"
             >
               <Package className="mr-1" /> Products
@@ -49,9 +79,9 @@ const SellerNavbar = () => {
           </div>
 
           {/* Settings Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={settingsDropdownRef}>
             <button
-              onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+              onClick={toggleSettingsDropdown}
               className="text-gray-300 hover:text-white flex items-center"
             >
               <Settings className="mr-1" /> Settings
@@ -102,7 +132,7 @@ const SellerNavbar = () => {
           {/* Products Dropdown for Mobile */}
           <div>
             <button
-              onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
+              onClick={toggleProductDropdown}
               className="block text-gray-300 hover:text-white"
             >
               <Package className="inline mr-2" /> Products
@@ -125,7 +155,7 @@ const SellerNavbar = () => {
           {/* Settings Dropdown for Mobile */}
           <div>
             <button
-              onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
+              onClick={toggleSettingsDropdown}
               className="block text-gray-300 hover:text-white"
             >
               <Settings className="inline mr-2" /> Settings

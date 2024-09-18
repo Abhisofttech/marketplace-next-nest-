@@ -6,7 +6,10 @@ const BuyerDashboard = () => {
 
   return (
     <>
+    <div className="min-h-screen">
+
    <ShowProduct/>
+    </div>
    
     </>
   );

@@ -119,4 +119,18 @@ async updateProduct(id: string, file: Express.Multer.File, updateProductDto: any
       $inc: { stock: -quantity },
     });
   }
+
+  async findMostViewed(): Promise<Product[]> {
+    return this.productModel.find().sort({ views: -1 }).limit(5).exec();
+  }
+  async getStockProducts() {
+    try {
+      const StockProducts = await this.productModel
+        .find() // Fetch products with stock less than 10
+        .populate('seller', 'name email'); // Populate seller details if required
+      return StockProducts;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 }

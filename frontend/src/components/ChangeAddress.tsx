@@ -1,6 +1,6 @@
 
 
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
@@ -56,10 +56,6 @@ const ChangeAddress = () => {
     fetchUserDetails();
   }, [enqueueSnackbar]);
 
-
-
-
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAddress((prev) => ({
@@ -81,14 +77,13 @@ const ChangeAddress = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-        dispatch(setAddresses(address));
-        const formatAddress = (address: any): string => {
-          return `${address.houseNumber}, ${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`;
-        };
-        
-        const formattedAddress = formatAddress(address);
-        console.log(formattedAddress);
-        localStorage.setItem('address',formattedAddress)
+      dispatch(setAddresses(address));
+      const formatAddress = (address: Address): string => {
+        return `${address.houseNumber}, ${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`;
+      };
+
+      const formattedAddress = formatAddress(address);
+      localStorage.setItem('address', formattedAddress);
       enqueueSnackbar('Address updated successfully!', { variant: 'success' });
     } catch (err) {
       setError('Failed to update address');
@@ -101,76 +96,84 @@ const ChangeAddress = () => {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">Change Address</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">House Number</label>
-          <input
-            type="text"
-            name="houseNumber"
-            value={address.houseNumber}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Street</label>
-          <input
-            type="text"
-            name="street"
-            value={address.street}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">City</label>
-          <input
-            type="text"
-            name="city"
-            value={address.city}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">State</label>
-          <input
-            type="text"
-            name="state"
-            value={address.state}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Postal Code</label>
-          <input
-            type="text"
-            name="postalCode"
-            value={address.postalCode}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Country</label>
-          <input
-            type="text"
-            name="country"
-            value={address.country}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
+    <div className="max-w-2xl mx-auto p-4">
+      <h1 className="text-3xl font-semibold mb-6 text-center">Change Address</h1>
+      <form onSubmit={handleSubmit} className="space-y-5 bg-white shadow-md rounded-lg p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">House Number</label>
+            <input
+              type="text"
+              name="houseNumber"
+              value={address.houseNumber}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Street</label>
+            <input
+              type="text"
+              name="street"
+              value={address.street}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">City</label>
+            <input
+              type="text"
+              name="city"
+              value={address.city}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">State</label>
+            <input
+              type="text"
+              name="state"
+              value={address.state}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Postal Code</label>
+            <input
+              type="text"
+              name="postalCode"
+              value={address.postalCode}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Country</label>
+            <input
+              type="text"
+              name="country"
+              value={address.country}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              required
+            />
+          </div>
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >
           Update Address
         </button>
-        {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+        {error && <div className="text-red-500 text-sm mt-2 text-center">{error}</div>}
       </form>
     </div>
   );
